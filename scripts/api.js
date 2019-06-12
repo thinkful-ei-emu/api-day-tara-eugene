@@ -34,6 +34,7 @@ const api = (function() {
   };
 
   const deleteItem = function(id) {
+    console.log(`Deleting item ${id}`);
     return fetch(`${BASE_URL}/items/${id}`, {
       method: 'DELETE'
     });

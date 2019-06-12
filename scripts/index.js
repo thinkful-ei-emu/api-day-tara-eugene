@@ -20,13 +20,13 @@ $(document).ready(function() {
     console.log(items);
   }); */
 
-// api.getItems()
-//   .then(res => res.json())
-//   .then((items) => {
+api.getItems()
+  .then(res => res.json())
+  .then((items) => {
     
-//     items.forEach((item) => store.addItem(item));
-//     shoppingList.render();
-//   });
+    items.forEach((item) => store.addItem(item));
+    shoppingList.render();
+  });
 
 
 // api.getItems()
