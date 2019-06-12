@@ -8,11 +8,23 @@ const api = (function() {
 
   const getItems = function() {
     return fetch(`${BASE_URL}/items`)
-//    return Promise.resolve('A successful response!');
+    //    return Promise.resolve('A successful response!');
   };
 
+  const createItem = 
+    function(name) {
+      let newItem = JSON.stringify({name: name});
+      return fetch(`${BASE_URL}/items`, {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        body: newItem
+      });
+    };
   return {
-    getItems
+    getItems,
+    createItem
   };
 
 }());
