@@ -34,12 +34,10 @@ const shoppingList = (function(){
       </li>`;
   }
   
-  
   function generateShoppingItemsString(shoppingList) {
     const items = shoppingList.map((item) => generateItemElement(item));
     return items.join('');
   }
-  
   
   function render() {
     // Filter item list if store prop is true by item.checked === false
@@ -61,14 +59,13 @@ const shoppingList = (function(){
     $('.js-shopping-list').html(shoppingListItemsString);
   }
   
-  
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
       api.createItem(newItemName)
-        .then(res => res.json())
+       
         .then((item) => {
           store.addItem(item);
           render();
@@ -88,7 +85,7 @@ const shoppingList = (function(){
       const id = getItemIdFromElement(event.currentTarget);
       const findItem = store.findById(id);
       api.updateItem(id, {checked: !findItem.checked}) // store.items.checked doesnt specify which object
-        .then(res => res.json())
+
         .then(item => {
           store.findAndUpdate(id, {checked: !findItem.checked});
           render();
@@ -97,9 +94,6 @@ const shoppingList = (function(){
     });
   }
 
-
-  // }
-  
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
@@ -120,8 +114,7 @@ const shoppingList = (function(){
       const itemName = $(event.currentTarget).find('.shopping-item').val();
       const findItem = store.findById(id);
       api.updateItem(id, {name: itemName});
-      // .then(res => res.json())
-      // .then(item => {
+      
       store.findAndUpdate(id, {name: itemName, isEditing: !findItem.isEditing});
       render();
         
