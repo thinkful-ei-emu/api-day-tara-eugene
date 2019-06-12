@@ -41,6 +41,7 @@ const shoppingList = (function(){
   
   function render() {
     // Filter item list if store prop is true by item.checked === false
+
     let items = [ ...store.items ];
     if (store.hideCheckedItems) {
       items = items.filter(item => !item.checked);
@@ -52,11 +53,14 @@ const shoppingList = (function(){
     }
   
     // render the shopping list in the DOM
-    console.log('`render` ran');
     const shoppingListItemsString = generateShoppingItemsString(items);
   
     // insert that HTML into the DOM
     $('.js-shopping-list').html(shoppingListItemsString);
+    if (store.err) {
+      $('.js-shopping-list').prepend(`Could not complete request: ${store.err.message}`);
+    }
+    store.setError(null);
   }
   
   function handleNewItemSubmit() {
@@ -69,10 +73,14 @@ const shoppingList = (function(){
         .then((item) => {
           store.addItem(item);
           render();
+        })
+        .catch(error => {
+          store.setError(error);
+          render();
         });
-      
     });
-  }
+    
+  }       
   
   function getItemIdFromElement(item) {
     return $(item)
@@ -113,10 +121,17 @@ const shoppingList = (function(){
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
       const findItem = store.findById(id);
-      api.updateItem(id, {name: itemName});
+      api.updateItem(id, {name: itemName})
+        .then((item) => {
+          store.findAndUpdate(id, {name: itemName, isEditing: !findItem.isEditing});
+          render();
+        })
+        .catch(error => {
+          store.setError(error);
+          render();
+        });
       
-      store.findAndUpdate(id, {name: itemName, isEditing: !findItem.isEditing});
-      render();
+
         
       
       //store.setItemIsEditing(id, false);

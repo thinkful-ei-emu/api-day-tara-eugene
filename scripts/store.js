@@ -11,14 +11,12 @@ const store = (function(){
   };
 
   const findAndUpdate = function(id, newData) {
-    console.log('updating item in store');
     let item = this.findById(id);
     Object.assign(item, newData);
   }; 
 
 
   const findAndDelete = function(id) {
-    console.log("deleting item in store");
     this.items = this.items.filter(item => item.id !== id);
   };
 
@@ -35,10 +33,15 @@ const store = (function(){
     this.searchTerm = term;
   };
 
+  const setError = function(error) { 
+    this.err = error;
+  };
+
   return {
     items: [],
     hideCheckedItems: false,
     searchTerm: '',
+    err : null,
     addItem,
     findById,
     findAndDelete,
@@ -46,6 +49,7 @@ const store = (function(){
     toggleCheckedFilter,
     setSearchTerm,
     setItemIsEditing,
+    setError
   };
   
 }());

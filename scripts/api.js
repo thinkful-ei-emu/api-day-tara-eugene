@@ -48,7 +48,6 @@ const api = (function() {
   };
 
   const updateItem = function(id, updateData) {
-    console.log(`${BASE_URL}/items/${id}`);
     return listApiFetch(`${BASE_URL}/items/${id}`, {
       method: 'PATCH',
       headers: new Headers({
@@ -59,7 +58,6 @@ const api = (function() {
   };
 
   const deleteItem = function(id) {
-    console.log(`Deleting item ${id}`);
     return listApiFetch(`${BASE_URL}/items/${id}`, {
       method: 'DELETE'
     });
