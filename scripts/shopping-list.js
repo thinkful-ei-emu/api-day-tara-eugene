@@ -86,33 +86,18 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      
-      api.updateItem(id, {checked: !store.items.checked}) // store.items.checked doesnt specify which object
+      const findItem = store.findById(id);
+      api.updateItem(id, {checked: !findItem.checked}) // store.items.checked doesnt specify which object
         .then(res => res.json())
         .then(item => {
-          store.findAndUpdate(id, item);
+          store.findAndUpdate(id, {checked: !findItem.checked});
           render();
         }
         );
     });
   }
 
-  // function handleItemCheckClicked() {
-  //   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
-  //     const id = getItemIdFromElement(event.currentTarget);
-      
-  //     // this is needed because you need to select item with that id
-  //     const findItem = store.findById(id);
-     
-  //     //at that id, set checked to opposite of what it was
-  //     api.updateItem(id, {checked: !findItem.checked})
-  //       .then(res => res.json())
-  //       .then(item => {
-  //         store.findAndUpdate(id, {checked: !findItem.checked,});
-  //         render();
-  //       }
-  //       );
-  //   });
+
   // }
   
   function handleDeleteItemClicked() {
@@ -121,6 +106,7 @@ const shoppingList = (function(){
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
       // delete the item
+      api.deleteItem(id);
       store.findAndDelete(id);
       // render the updated shopping list
       render();
@@ -132,15 +118,15 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      api.updateItem(id, {name: itemName})
-        .then(res => res.json())
-        .then(item => {
-          store.findAndUpdate(id, item);
-          render();
-        });
+      const findItem = store.findById(id);
+      api.updateItem(id, {name: itemName});
+      // .then(res => res.json())
+      // .then(item => {
+      store.findAndUpdate(id, {name: itemName, isEditing: !findItem.isEditing});
+      render();
+        
       
       //store.setItemIsEditing(id, false);
-      render();
     });
   }
   

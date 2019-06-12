@@ -11,13 +11,14 @@ const store = (function(){
   };
 
   const findAndUpdate = function(id, newData) {
-    console.log("updating item in store");
+    console.log('updating item in store');
     let item = this.findById(id);
     Object.assign(item, newData);
   }; 
 
 
   const findAndDelete = function(id) {
+    console.log("deleting item in store");
     this.items = this.items.filter(item => item.id !== id);
   };
 
