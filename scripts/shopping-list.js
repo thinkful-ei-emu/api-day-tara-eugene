@@ -83,37 +83,37 @@ const shoppingList = (function(){
       .data('item-id');
   }
   
-  // function handleItemCheckClicked() {
-  //   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
-  //     const id = getItemIdFromElement(event.currentTarget);
-      
-  //     api.updateItem(id, {checked: !store.items.checked})
-  //       .then(res => res.json())
-  //       .then(item => {
-  //         store.findAndUpdate(id, item);
-  //         render();
-  //       }
-  //       );
-  //   });
-  // }
-
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
       
-      // this is needed because you need to select item with that id
-      const findItem = store.findById(id);
-     
-      //at that id, set checked to opposite of what it was
-      api.updateItem(id, {checked: !findItem.checked})
+      api.updateItem(id, {checked: !store.items.checked}) // store.items.checked doesnt specify which object
         .then(res => res.json())
         .then(item => {
-          store.findAndUpdate(id, {checked: !findItem.checked,});
+          store.findAndUpdate(id, item);
           render();
         }
         );
     });
   }
+
+  // function handleItemCheckClicked() {
+  //   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
+  //     const id = getItemIdFromElement(event.currentTarget);
+      
+  //     // this is needed because you need to select item with that id
+  //     const findItem = store.findById(id);
+     
+  //     //at that id, set checked to opposite of what it was
+  //     api.updateItem(id, {checked: !findItem.checked})
+  //       .then(res => res.json())
+  //       .then(item => {
+  //         store.findAndUpdate(id, {checked: !findItem.checked,});
+  //         render();
+  //       }
+  //       );
+  //   });
+  // }
   
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
@@ -139,7 +139,7 @@ const shoppingList = (function(){
           render();
         });
       
-      //      store.setItemIsEditing(id, false);
+      //store.setItemIsEditing(id, false);
       render();
     });
   }
